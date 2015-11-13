@@ -7,8 +7,8 @@ import com.google.common.collect.Sets;
 
 public class Node {
 	public Integer value = -1;
-	public Set<Integer> incoming = Sets.newTreeSet(new NodeComparator());
-	public Set<Integer> outgoing = Sets.newTreeSet(new NodeComparator());
+	public Set<Integer> incoming = Sets.newTreeSet(); // use natural ordering
+	public Set<Integer> outgoing = Sets.newTreeSet(); // use natural ordering
 	
 	public boolean explored = false;
 	public Integer leader = -1;

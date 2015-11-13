@@ -2,11 +2,15 @@ package com.kiblerdude.kusarajus;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+
+import java.util.Set;
+
+import com.google.common.collect.Maps;import com.google.common.collect.Sets;
+
 
 public class Graph {
 	
-	public Map<Integer, Node> nodes = Maps.newTreeMap(new NodeComparator());
+	public Map<Integer, Node> nodes = Maps.newTreeMap(new NodeComparator()); // use descending order
 	
 	public void addNode(Node node) {
 		nodes.put(node.value, node);
@@ -41,6 +45,36 @@ public class Graph {
 			gRev.addNode(nRev);
 		});
 		return gRev;
+	}
+	
+	public Graph swapValueAndTime() {
+		Graph gSwapped = new Graph();
+		Map<Integer, Integer> nodeToTime = Maps.newHashMap();
+		
+		// generate a mapping of node to magic time so we can easily lookup
+		// values to change for the incoming and outgoing edges
+		nodes.forEach((k,v) -> {
+			nodeToTime.put(k, v.time);
+		});
+		
+		nodes.forEach((k,v) -> {
+			// swap the incoming
+			Set<Integer> swappedIncoming = Sets.newTreeSet();
+			v.incoming.forEach(e -> {
+				swappedIncoming.add(nodeToTime.get(e));
+			});
+			
+			// swap the outgoing
+			Set<Integer> swappedOutgoing = Sets.newTreeSet();
+			v.outgoing.forEach(e -> {
+				swappedOutgoing.add(nodeToTime.get(e));
+			});
+			
+			// swap the value with the time
+			Node nSwap = new Node(v.time, swappedIncoming, swappedOutgoing, v.explored, v.leader, k);
+			gSwapped.addNode(nSwap);
+		});
+		return gSwapped;
 	}
 	
 	public void resetExplored() {

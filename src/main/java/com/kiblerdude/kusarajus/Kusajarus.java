@@ -20,8 +20,10 @@ public class Kusajarus
 	
 	public void computeStronglyConnectedComponents(Graph graph) {
 		
+		System.out.println("Original Graph");
     	System.out.println(graph);    	
 		Graph gRev = graph.reverse();
+		System.out.println("Reversed Graph");
 		System.out.println(gRev);
 
 
@@ -30,10 +32,13 @@ public class Kusajarus
 				DFSTimes(gRev, node);
 			}
 		});
+		System.out.println("After Calculating Times");
 		System.out.println(gRev);
 			
-		Graph g = gRev.reverse();
+		Graph g = gRev.reverse().swapValueAndTime();
 		g.resetExplored();
+		// TODO need to swap node value with magic time
+		System.out.println("After Reverse And Swap");
 		System.out.println(g);
 		
 		g.nodes.forEach((k, node) -> {
@@ -43,6 +48,7 @@ public class Kusajarus
 			}
 		});
 		
+		System.out.println("After Calculating Leaders");
 		System.out.println(g);
 	}
 	
