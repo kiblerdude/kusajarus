@@ -33,6 +33,10 @@ public class Node {
 		outgoing = temp;
 	}
 	
+	public Integer getLeader() {
+		return leader;
+	}
+	
 	@Override
 	public int hashCode() {
 		return value.hashCode();
