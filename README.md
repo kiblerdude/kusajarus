@@ -4,7 +4,7 @@ Computes strongly connected components in a directed graph.
 
 - Step 1 - Let Grev = Graph G with all arcs reversed
 - Step 2 - Run Algorithm on Grev, compute the times
-- Step 3 - Run Algoirhtm on G, compute the leaders
+- Step 3 - Run Algorithm on G, compute the leaders
 
 ##### Pseudocode
 
