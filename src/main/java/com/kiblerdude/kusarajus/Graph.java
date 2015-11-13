@@ -4,8 +4,9 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-public class Graph {	
-	public Map<Integer, Node> nodes = Maps.newTreeMap();
+public class Graph {
+	
+	public Map<Integer, Node> nodes = Maps.newTreeMap(new NodeComparator());
 	
 	public void addNode(Node node) {
 		nodes.put(node.value, node);

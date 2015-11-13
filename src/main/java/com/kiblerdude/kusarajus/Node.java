@@ -7,8 +7,8 @@ import com.google.common.collect.Sets;
 
 public class Node {
 	public Integer value = -1;
-	public Set<Integer> incoming = Sets.newTreeSet();
-	public Set<Integer> outgoing = Sets.newTreeSet();
+	public Set<Integer> incoming = Sets.newTreeSet(new NodeComparator());
+	public Set<Integer> outgoing = Sets.newTreeSet(new NodeComparator());
 	
 	public boolean explored = false;
 	public Integer leader = -1;
@@ -52,7 +52,7 @@ public class Node {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(value).append("(").append(Joiner.on(",").join(explored, time, leader)).append(")").append(" -> ");
+		builder.append(value).append(" (").append(Joiner.on(",").join(explored, time, leader)).append(")").append(" -> ");
 		builder.append(Joiner.on(",").join(outgoing));
 		builder.append(" : <- ");
 		builder.append(Joiner.on(",").join(incoming));
