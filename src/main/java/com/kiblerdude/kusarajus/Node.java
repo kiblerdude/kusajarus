@@ -18,14 +18,17 @@ public class Node {
 		this.value = value;
 	}
 	
-	public Node(Integer value, Set<Integer> incoming, Set<Integer> outgoing) {
+	public Node(Integer value, Set<Integer> incoming, Set<Integer> outgoing, Boolean explored, Integer leader, Integer time) {
 		this.value = value;
 		this.incoming = incoming;
 		this.outgoing = outgoing;
+		this.explored = explored;
+		this.leader = leader;
+		this.time = time;
 	}
 	
 	public void reverse() {
-		Set<Integer> temp = Sets.newHashSet(incoming);
+		Set<Integer> temp = Sets.newTreeSet(incoming);
 		incoming = outgoing;
 		outgoing = temp;
 	}
@@ -49,7 +52,7 @@ public class Node {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(value).append(" -> ");
+		builder.append(value).append("(").append(Joiner.on(",").join(explored, time, leader)).append(")").append(" -> ");
 		builder.append(Joiner.on(",").join(outgoing));
 		builder.append(" : <- ");
 		builder.append(Joiner.on(",").join(incoming));

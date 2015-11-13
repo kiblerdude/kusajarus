@@ -14,22 +14,59 @@ import com.google.common.base.Splitter;
  * Computes strongly connected components in a directed graph.
  */
 public class Kusajarus 
-{
-	Integer time = 0;
-	Node leader = null;
+{	
+	private Integer time = 0;
+	private Integer leader = 0;
 	
-	public void DFSLoop(Graph g) {
-		g.nodes.forEach((k,node) -> {
+	public void computeStronglyConnectedComponents(Graph graph) {
+		
+    	System.out.println(graph);    	
+		Graph gRev = graph.reverse();
+		System.out.println(gRev);
+
+
+		gRev.nodes.forEach((k,node) -> {
 			if (!node.explored) {
-				leader = node;
-				DFS(g, node);
+				DFSTimes(gRev, node);
 			}
 		});
+		System.out.println(gRev);
+			
+		Graph g = gRev.reverse();
+		g.resetExplored();
+		System.out.println(g);
+		
+		g.nodes.forEach((k, node) -> {
+			leader = node.value;
+			if (!node.explored) {
+				DFSLeaders(g, node);
+			}
+		});
+		
+		System.out.println(g);
 	}
 	
-	private void DFS(Graph g, Node n) {
+	private void DFSTimes(Graph g, Node n) {
 		n.explored = true;
-		
+		n.outgoing.forEach(value -> {
+			Node arc = g.nodes.get(value);
+			if (!arc.explored) {
+				DFSTimes(g, arc);
+			}
+		});
+		time++;
+		n.time = time;		
+	}
+	
+	private void DFSLeaders(Graph g, Node n) {
+		n.explored = true;
+		n.leader = leader;
+		n.outgoing.forEach(value -> {
+			Node arc = g.nodes.get(value);
+			if (!arc.explored) {
+				DFSLeaders(g, arc);
+			}
+		});
 	}
 	
     public static void main( String[] args ) throws IOException
@@ -44,10 +81,7 @@ public class Kusajarus
     		g.addEdge(Integer.parseInt(split.get(0)), Integer.parseInt(split.get(1)));
     	});
     	
-    	//System.out.println(g);
-    	
-    	Graph gRev = g.reverse();
-    	
-    	//System.out.println(gRev);
+    	Kusajarus algorithm = new Kusajarus();    	
+    	algorithm.computeStronglyConnectedComponents(g);
     }
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 public class Graph {	
-	public Map<Integer, Node> nodes = Maps.newHashMap();
+	public Map<Integer, Node> nodes = Maps.newTreeMap();
 	
 	public void addNode(Node node) {
 		nodes.put(node.value, node);
@@ -36,10 +36,16 @@ public class Graph {
 		nodes.forEach((k,v) -> {
 			// swap the incoming and outgoing nodes
 			// Node(Integer value, Set<Integer> incoming, Set<Integer> outgoing)
-			Node nRev = new Node(k, v.outgoing, v.incoming);
+			Node nRev = new Node(k, v.outgoing, v.incoming, v.explored, v.leader, v.time);
 			gRev.addNode(nRev);
 		});
 		return gRev;
+	}
+	
+	public void resetExplored() {
+		nodes.forEach((k,v) -> {
+			v.explored = false;
+		});
 	}
 	
 	@Override
