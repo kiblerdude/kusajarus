@@ -1,5 +1,6 @@
 package com.kiblerdude.kusarajus;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import com.google.common.base.Joiner;
@@ -9,6 +10,7 @@ public class Node {
 	public Integer value = -1;
 	public Set<Integer> incoming = Sets.newTreeSet(); // use natural ordering
 	public Set<Integer> outgoing = Sets.newTreeSet(); // use natural ordering
+	public Iterator<Integer> iter = outgoing.iterator();
 	
 	public boolean explored = false;
 	public Integer leader = -1;
@@ -25,12 +27,14 @@ public class Node {
 		this.explored = explored;
 		this.leader = leader;
 		this.time = time;
+		this.iter = outgoing.iterator();
 	}
 	
 	public void reverse() {
 		Set<Integer> temp = Sets.newTreeSet(incoming);
 		incoming = outgoing;
 		outgoing = temp;
+		this.iter = outgoing.iterator();
 	}
 	
 	public Integer getLeader() {

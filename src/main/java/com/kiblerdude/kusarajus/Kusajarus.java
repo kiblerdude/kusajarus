@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Splitter;
@@ -71,6 +72,26 @@ public class Kusajarus {
 	}
 
 	private void DFSTimes(Graph g, Node n) {
+		Stack<Node> stack = new Stack<>();
+		stack.push(n);
+		
+		while(!stack.isEmpty()) {
+			Node v = stack.peek();
+			v.explored = true;
+			if (v.iter.hasNext()) {
+				Node w = g.nodes.get(v.iter.next());
+				if (!w.explored) {
+					w.explored = true;
+					stack.push(w);
+				}				
+			} else {
+				Node t = stack.pop();
+				time++;
+				t.time = time;
+			}
+		}
+		
+		/*
 		n.explored = true;
 		n.outgoing.forEach(value -> {
 			Node arc = g.nodes.get(value);
@@ -80,9 +101,28 @@ public class Kusajarus {
 		});
 		time++;
 		n.time = time;
+		*/
 	}
 
 	private void DFSLeaders(Graph g, Node n) {
+		Stack<Node> stack = new Stack<>();
+		stack.push(n);
+		
+		while(!stack.isEmpty()) {
+			Node v = stack.peek();
+			v.explored = true;
+			v.leader = leader;
+			if (v.iter.hasNext()) {
+				Node w = g.nodes.get(v.iter.next());
+				if (!w.explored) {
+					w.explored = true;
+					stack.push(w);
+				}				
+			} else {
+				stack.pop();
+			}			
+		}
+		/*
 		n.explored = true;
 		n.leader = leader;
 		n.outgoing.forEach(value -> {
@@ -91,6 +131,7 @@ public class Kusajarus {
 				DFSLeaders(g, arc);
 			}
 		});
+		*/
 	}
 
 	static <K, V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
